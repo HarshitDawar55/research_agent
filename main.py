@@ -3,7 +3,6 @@ import os
 
 from fastapi import FastAPI, HTTPException
 from langchain.agents import AgentType, initialize_agent
-from langchain.tools.render import render_text_description
 from langchain_openai import ChatOpenAI
 from schemas import AgentQuery, ListOfPapers
 from tools import (
