@@ -119,10 +119,3 @@ def transform_user_query_for_research_gaps(topic):
     except Exception as e:
         logging.error(f"Exception Found: {str(e)}")
         return 400
-
-
-def return_tool_by_name(tools, name) -> Tool:
-    for tool in tools:
-        if tool.name == name:
-            return tool
-    raise ValueError(f"No Tool found with the name {name}")
