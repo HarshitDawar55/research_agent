@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 from schemas import AgentQuery, ListOfPapers
 from tools import (
     call_openai,
-    find_relevant_research_papers,
+    find_whether_a_research_paper_is_relevant_to_user_query,
     transform_user_query_for_essay,
     transform_user_query_for_literature_review,
     transform_user_query_for_research_gaps,
@@ -25,7 +25,7 @@ app = FastAPI(title="Research Agent", version="1.0.0")
 openai_key = os.getenv("OPENAI_API_KEY")
 all_tools = [
     call_openai,
-    find_relevant_research_papers,
+    find_whether_a_research_paper_is_relevant_to_user_query,
     transform_user_query_for_literature_review,
     transform_user_query_for_essay,
     transform_user_query_for_research_gaps,

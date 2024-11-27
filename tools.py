@@ -19,9 +19,9 @@ openai_key = os.getenv("OPENAI_API_KEY")
 
 
 @tool
-def find_relevant_research_papers(details: ListOfPapers) -> int:
+def find_whether_a_research_paper_is_relevant_to_user_query(details: ListOfPapers) -> int:
     """
-    This tool is used to find whether the given paper title and paper abstract are relevant to the user query or not!
+    This tool is only used to find whether the given paper title and paper abstract are relevant to the user query or not!
     """
     try:
         logging.info("Executing the Tool of finding the relevant research Papers")
@@ -68,7 +68,9 @@ def call_openai(query):
 @tool
 def transform_user_query_for_literature_review(query):
     """
-    This tool is used to transform user query for literature review report!
+    This tool is used to transform user query for literature review report. This tool has to be used
+    only when there is a query for literature review and generating an appropriate response for the
+    same!
     """
     try:
         logging.info("Using the tool to transform user query for Literature review!")
@@ -104,7 +106,9 @@ def transform_user_query_for_essay(topic):
 @tool
 def transform_user_query_for_research_gaps(topic):
     """
-    This tool is used to transform user query for identifying research gaps!
+    This tool is used to transform user query for identifying research gaps. If there is a requirement
+    where the gaps needs to be identified in the existing work, or it feels that the work is incomplete,
+    then this tool has to be used.!
     """
     try:
         logging.info(
