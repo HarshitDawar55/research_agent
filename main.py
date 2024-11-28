@@ -63,8 +63,24 @@ async def call_agent(input: AgentQuery):
     """
     try:
         logging.info("Staring the agent for other tasks!")
-        result = agent.run(input.query)
+        result = agent.invoke({"input": input})
         return {"result": result}
     except Exception as e:
         logging.error(f"Exception Found in the main agent function: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/literature_review")
+async def literature_review(input: ListOfPapers):
+    """
+    Used to automate the literature review task!
+    """
+    try:
+        logging.info("Starting the agent for the literature review task!")
+        result = agent.invoke({"input": input})
+        return {"result": result}
+    except Exception as e:
+        logging.error(
+            f"Exception Found in the literature review main function: {str(e)}"
+        )
         raise HTTPException(status_code=500, detail=str(e))

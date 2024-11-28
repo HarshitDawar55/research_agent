@@ -1,14 +1,15 @@
+from typing import List
+
 from pydantic import BaseModel
 
 
 class PaperInput(BaseModel):
     title: str
     abstract: str
-    query: str
 
 
 class ListOfPapers(BaseModel):
-    data: PaperInput
+    data: List[PaperInput]
     query: str
 
 
