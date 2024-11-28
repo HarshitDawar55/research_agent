@@ -26,54 +26,41 @@ def find_whether_a_research_paper_is_relevant_to_user_query(details):
     papers using this function.
 
     Input:
-    details: A string containing key value pair for user query, title, and abstract in JSON format without wrapping explicitly using "```json".
+    details: A string containing key value pair for user query, title, and abstract in JSON format, make sure to not wrap the content between "```json" and "```". Also make sure to not send a list, only send 1 record at one time.
     """
     try:
         # try:
         logging.info("Executing the Tool of finding the relevant research Papers")
-        logging.info(f"Details received {details}, type: {type(details)}")
-        details = json.loads(details.strip())
+        logging.info(f"Details received: {details}, type: {type(details)}")
+        details = json.loads(
+            details.strip()
+            .replace("'", "")
+            .replace("`", "")
+            .replace("```json", "")
+            .replace("```", "")
+        )
 
         logging.info(
             f" After conversion, Details received {details}, type: {type(details)}"
         )
-        #     for i in range(len(details)):
-        #         logging.warning(
-        #             f"Details received: {details[i]}, type: {type(details[i])}"
-        #         )
-        #     logging.info(f"Query in Details received: {details['query']}")
-        #     papers = []
-        # except Exception as e:
-        #     logging.error(f"Exception occurred while converting the details: {str(e)}")
 
-        # for i in range(len(details)):
-        try:
-            text_input = json.dumps(
-                {
-                    "query": details["query"],
-                    "title": details["title"],
-                    "abstract": details["abstract"],
-                }
-            )
+        text_input = json.dumps(
+            {
+                "title": details["title"],
+                "query": details["query"],
+                "abstract": details["abstract"],
+            }
+        )
 
-            response = requests.post(
-                url=URL_OF_RELEVANCE_SCORE_MODEL,
-                json=text_input,
-                headers={"Content-Type": "application/json"},
-            )
-        except Exception as e:
-            logging.error(
-                f"Exception occurred in sending the details to the relevance model API: {str(e)}"
-            )
+        response = requests.post(
+            url=URL_OF_RELEVANCE_SCORE_MODEL,
+            json=json.loads(text_input),
+            headers={"Content-Type": "application/json"},
+        )
+        logging.info(f"Response received: {response.json()}")
         relevance = int(response.json()["relevance_score"])
         if relevance == 1:
             return f"Paper Title: {details['title']} and Paper Abstract: {details['abstract']} are relevant"
-            # papers.append(
-            #     {"title": details[i]["title"], "abstract": details[i]["abstract"]}
-            # )
-        # if papers:
-        #     return f"Relevant papers list is: {papers}"
-        # return "No relevant papers found, hence not literature review can be done"
         return f"Paper Title: {details['title']} and Paper Abstract: {details['abstract']} are not relevant"
     except Exception as e:
         logging.error(f"Exception Found in finding relevant papers tool: {str(e)}")
